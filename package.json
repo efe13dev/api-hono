@@ -1,0 +1,13 @@
+{
+	"name": "api-hono",
+	"scripts": {
+		"dev": "bun run --hot src/server.ts"
+	},
+	"dependencies": {
+		"hono": "^4.7.5"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/bun": "latest"
+	}
+}
