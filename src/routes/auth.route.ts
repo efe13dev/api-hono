@@ -8,6 +8,9 @@ authRouter.post('/register', async (c) => {
 	console.log(email, password);
 
 	// 2. Validar los datos del usuario
+	if (!email || !password) {
+		return c.json({ message: 'Email and password are required' }, 400);
+	}
 	// 3. Verificar que el usuario no existe
 	// 4. Hacer el hash de la contraseña
 	// 5. Guardar el usuario en la base de datos
