@@ -8,8 +8,8 @@ import { usersTable } from '../db/schema';
 export const authRouter = new Hono();
 
 authRouter.post('/register', zValidator('json', registerSchema), async (c) => {
-	// 1. Obtener los datos del usuario del body y validarlos
-
+	// 1. Obtener los datos del usuario del body validarlos.
+	// 2. Validar los datos del usuario
 	const { email, password, username } = c.req.valid('json');
 
 	// 3. Verificar que el usuario no existe
