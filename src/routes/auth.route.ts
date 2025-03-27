@@ -1,9 +1,10 @@
 import { Hono } from 'hono';
+import { sign } from 'hono/jwt';
 import { zValidator } from '@hono/zod-validator';
-import { registerSchema, loginSchema } from '../schemas/authSchemas';
 import { db } from '../db';
 import { eq } from 'drizzle-orm';
 import { usersTable } from '../db/schema';
+import { registerSchema, loginSchema } from '../schemas/authSchemas';
 
 export const authRouter = new Hono();
 
@@ -63,7 +64,20 @@ authRouter.post('/login', zValidator('json', loginSchema), async (c) => {
 	if (!isPasswordValid) {
 		return c.json({ message: 'User or password is incorrect' }, 404);
 	}
+
 	// 5. Generar un token de autenticacion JWT
+	const payload = {
+		id: user.id,
+		email: user.email,
+	};
+	const secret = process.env.JWT_SECRET;
+
+	if (!secret) {
+		return c.json({ message: 'Internal server error' }, 500);
+	}
+
+	const token = await sign(payload, secret);
+
 	// 6. Devolver el token
-	return c.json({ message: 'Login' });
+	return c.json({ token: token }, 200);
 });
